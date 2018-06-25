@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/uit/settings</path>
+    <page_callback>CRM_ctrl_uit_Form_UitSettings</page_callback>
+    <title>UitSettings</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>

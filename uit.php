@@ -1,7 +1,6 @@
 <?php
 
 require_once 'uit.civix.php';
-use CRM_Uit_ExtensionUtil as E;
 
 /**
  * Implements hook_civicrm_config().
@@ -63,6 +62,9 @@ function uit_civicrm_enable() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_disable
  */
 function uit_civicrm_disable() {
+  // remove variable(s)
+  CRM_Core_BAO_Setting::setItem('', 'uit', 'uit-settings');
+  // continue
   _uit_civix_civicrm_disable();
 }
 
@@ -130,23 +132,23 @@ function uit_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_preProcess
  *
-function uit_civicrm_preProcess($formName, &$form) {
-
-} // */
+ * function uit_civicrm_preProcess($formName, &$form) {
+ *
+ * } // */
 
 /**
  * Implements hook_civicrm_navigationMenu().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
  *
-function uit_civicrm_navigationMenu(&$menu) {
-  _uit_civix_insert_navigation_menu($menu, NULL, array(
-    'label' => E::ts('The Page'),
-    'name' => 'the_page',
-    'url' => 'civicrm/the-page',
-    'permission' => 'access CiviReport,access CiviContribute',
-    'operator' => 'OR',
-    'separator' => 0,
-  ));
-  _uit_civix_navigationMenu($menu);
-} // */
+ * function uit_civicrm_navigationMenu(&$menu) {
+ * _uit_civix_insert_navigation_menu($menu, NULL, array(
+ * 'label' => E::ts('The Page'),
+ * 'name' => 'the_page',
+ * 'url' => 'civicrm/the-page',
+ * 'permission' => 'access CiviReport,access CiviContribute',
+ * 'operator' => 'OR',
+ * 'separator' => 0,
+ * ));
+ * _uit_civix_navigationMenu($menu);
+ * } // */

@@ -1,7 +1,7 @@
 # be.ctrl.uit
 
 ## Introduction
-CiviCRM UiT extension: Migrate Events from UiT to CiviCRM.
+CiviCRM UiT extension: Everything functionaly related to UiT extension.
 
 ## Installation
 - You can directly clone to your CiviCRM extension directory using<br>
@@ -23,3 +23,7 @@ CiviCRM UiT extension: Migrate Events from UiT to CiviCRM.
 
 - PHP v7.0+
 - CiviCRM 5.0
+
+## Configuration
+
+- Manage credentials: **yoursite.org/civicrm/uit/settings**.
