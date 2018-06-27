@@ -23,6 +23,7 @@ class CRM_ctrl_uit_Form_UitSettings extends CRM_Core_Form {
       'Host',
       ['value' => $decode['uit_host']]
     );
+    /*
     $this->add(
       'text',
       'uit_user',
@@ -34,6 +35,13 @@ class CRM_ctrl_uit_Form_UitSettings extends CRM_Core_Form {
       'uit_pass',
       'Pass',
       ['value' => $decode['uit_pass']]
+    );
+    */
+    $this->add(
+      'text',
+      'uit_key',
+      'Key',
+      ['value' => $decode['uit_key']]
     );
     // Buttons.
     $this->addButtons([
@@ -48,6 +56,14 @@ class CRM_ctrl_uit_Form_UitSettings extends CRM_Core_Form {
     parent::buildQuickForm();
   }
 
+
+  /**
+   * {@inheritdoc}
+   */
+  public function addRules() {
+    $this->addFormRule(['CRM_ctrl_uit_Form_UitSettings', 'validation']);
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -55,8 +71,11 @@ class CRM_ctrl_uit_Form_UitSettings extends CRM_Core_Form {
     // Get the submitted values as an array
     $values = $this->controller->exportValues($this->_name);
     $credentials['uit_host'] = $values['uit_host'];
+    /*
     $credentials['uit_user'] = $values['uit_user'];
     $credentials['uit_pass'] = $values['uit_pass'];
+    */
+    $credentials['uit_key'] = $values['uit_key'];
     $encode = json_encode($credentials);
     CRM_Core_BAO_Setting::setItem($encode, 'uit', 'uit-settings');
     parent::postProcess();
@@ -81,6 +100,20 @@ class CRM_ctrl_uit_Form_UitSettings extends CRM_Core_Form {
       }
     }
     return $elementNames;
+  }
+
+  /**
+   * Validation callback.
+   */
+  public static function validation($values) {
+    $errors = [];
+    if (empty($values['uit_host'])) {
+      $errors['uit_host'] = ts('The host is required!');
+    }
+    if (empty($values['uit_key'])) {
+      $errors['uit_key'] = ts('The key is required!');
+    }
+    return empty($errors) ? TRUE : $errors;
   }
 
 }
