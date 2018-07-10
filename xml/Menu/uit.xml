@@ -6,4 +6,10 @@
     <title>UitSettings</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/uit/config</path>
+    <page_callback>CRM_ctrl_uit_Form_UitConfig</page_callback>
+    <title>UitConfig</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

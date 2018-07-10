@@ -53,6 +53,10 @@ function uit_civicrm_uninstall() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_enable
  */
 function uit_civicrm_enable() {
+  // Set config variable.
+  $config['events'] = ['status' => 1, 'modified' => strtotime("now")];
+  CRM_Core_BAO_Setting::setItem(json_encode($config), 'uit', 'uit-config');
+  // Continue.
   _uit_civix_civicrm_enable();
 }
 
@@ -62,9 +66,10 @@ function uit_civicrm_enable() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_disable
  */
 function uit_civicrm_disable() {
-  // remove variable(s)
+  // Remove variable(s).
   CRM_Core_BAO_Setting::setItem('', 'uit', 'uit-settings');
-  // continue
+  CRM_Core_BAO_Setting::setItem('', 'uit', 'uit-config');
+  // Continue.
   _uit_civix_civicrm_disable();
 }
 

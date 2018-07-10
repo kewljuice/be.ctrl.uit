@@ -1,6 +1,6 @@
 <div class="crm-block crm-form-block">
     {* header *}
-    <h2>Settings</h2>
+    <h2>Config</h2>
 
     {* body *}
     {foreach from=$elementNames item=elementName}

@@ -26,4 +26,5 @@ CiviCRM UiT extension: Everything functionaly related to UiT extension.
 
 ## Configuration
 
-- Manage credentials: **yoursite.org/civicrm/uit/settings**.
+- Manage settings: **yoursite.org/civicrm/uit/settings**.
+- Manage config: **yoursite.org/civicrm/uit/config**.

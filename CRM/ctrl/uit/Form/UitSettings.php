@@ -56,7 +56,6 @@ class CRM_ctrl_uit_Form_UitSettings extends CRM_Core_Form {
     parent::buildQuickForm();
   }
 
-
   /**
    * {@inheritdoc}
    */
