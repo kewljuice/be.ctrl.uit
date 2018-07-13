@@ -1,7 +1,7 @@
 # be.ctrl.uit
 
 ## Introduction
-CiviCRM UiT extension: Everything functionaly related to UiT extension.
+CiviCRM UiT extension: Everything functionally related to UiT migration.
 
 ## Installation
 - You can directly clone to your CiviCRM extension directory using<br>
@@ -28,3 +28,13 @@ CiviCRM UiT extension: Everything functionaly related to UiT extension.
 
 - Manage settings: **yoursite.org/civicrm/uit/settings**.
 - Manage config: **yoursite.org/civicrm/uit/config**.
+
+## Endpoints
+
+### UitMigrate: status
+
+```
+$result = civicrm_api3('UitMigrate', 'status', array(
+    'UitType' => "events",
+));
+```

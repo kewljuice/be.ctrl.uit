@@ -2,7 +2,7 @@
 <extension key="be.ctrl.uit" type="module">
   <file>uit</file>
   <name>CiviCRM UiT extension</name>
-  <description>Everything functionaly related to UiT extension</description>
+  <description>Everything functionally related to UiT extension</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>Hechtermans Wouter</author>

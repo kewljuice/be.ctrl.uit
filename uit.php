@@ -53,8 +53,17 @@ function uit_civicrm_uninstall() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_enable
  */
 function uit_civicrm_enable() {
-  // Set config variable.
-  $config['events'] = ['status' => 1, 'modified' => strtotime("now")];
+  // Set default settings variable.
+  $settings['uit_host'] = 'https://search.uitdatabank.be/';
+  CRM_Core_BAO_Setting::setItem(json_encode($settings), 'uit', 'uit-settings');
+  // Set default config variable.
+  $config['events'] = [
+    'status' => 1,
+    //'modified' => strtotime("now"),
+    'modified' => NULL,
+    'params' => '',
+    'limit' => 250,
+  ];
   CRM_Core_BAO_Setting::setItem(json_encode($config), 'uit', 'uit-config');
   // Continue.
   _uit_civix_civicrm_enable();
