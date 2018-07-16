@@ -1,7 +1,7 @@
 <?php
 
 /**
- * UitMigrate.Status API specification (optional)
+ * UitMigrate.Import API specification (optional)
  * This is used for documentation and validation.
  *
  * @param array $spec description of fields supported by this API call
@@ -9,7 +9,7 @@
  * @return void
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
-function _civicrm_api3_uit_migrate_Status_spec(&$spec) {
+function _civicrm_api3_uit_migrate_Import_spec(&$spec) {
   $spec['UitType']['api.required'] = 1;
   $spec['UitType']['options'] = [
     'events' => 'UiT Events',
@@ -19,7 +19,7 @@ function _civicrm_api3_uit_migrate_Status_spec(&$spec) {
 }
 
 /**
- * UitMigrate.Status API
+ * UitMigrate.Import API
  *
  * @param array $params
  *
@@ -28,16 +28,16 @@ function _civicrm_api3_uit_migrate_Status_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_uit_migrate_Status($params) {
+function civicrm_api3_uit_migrate_Import($params) {
   // Check if 'UitType' is given.
   if (array_key_exists('UitType', $params)) {
     // Switch UitType.
     switch ($params['UitType']) {
       case "events":
-        // Migrate status.
+        // Migrate import.
         $type = 'events';
         $controller = new CRM_ctrl_uit_migrate_controller($type);
-        $returnValues = $controller->status();
+        $returnValues = $controller->import();
         return civicrm_api3_create_success($returnValues, $params, 'UitMigrate', 'Status');
         break;
       default:

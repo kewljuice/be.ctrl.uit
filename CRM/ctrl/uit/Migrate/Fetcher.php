@@ -12,7 +12,7 @@ class CRM_ctrl_uit_migrate_fetcher {
   private $headers;
 
   /**
-   * Contructor.
+   * Constructor.
    */
   function __construct($key) {
     // Define headers.
