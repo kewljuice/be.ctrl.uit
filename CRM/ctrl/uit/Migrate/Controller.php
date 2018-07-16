@@ -101,6 +101,7 @@ class CRM_ctrl_uit_migrate_controller {
 
   public function import() {
 
+    // Fetch status.
     $status = $this->status();
 
     if (isset($status['count'])) {
@@ -123,12 +124,23 @@ class CRM_ctrl_uit_migrate_controller {
           foreach ($response['member'] as $value) {
             $items[$value['@id']]['id'] = $value['@id'];
             $items[$value['@id']]['hash'] = md5(serialize($value));
+            $items[$value['@id']]['type'] = $this->type;
+            // Save UiT type to CiviCRM.
+            switch ($this->type) {
+              case "events":
+                // Create Event.
+                $fetcher = new CRM_ctrl_uit_migrate_event();
+                $items[$value['@id']]['status'] = $fetcher->save($value);
+                break;
+              default:
+                // @todo: Implement Create for other UiT types. (places, ...)
+            }
           }
         }
         // Next.
         $step += $this->limit;
         // @todo: remove when API can handle more that 10000 items.
-        if ($step >= 1000) {
+        if ($step >= 10000) {
           break;
         }
       } while ($count >= $step);

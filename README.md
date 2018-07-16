@@ -38,3 +38,11 @@ $result = civicrm_api3('UitMigrate', 'status', array(
     'UitType' => "events",
 ));
 ```
+
+### UitMigrate: import
+
+```
+$result = civicrm_api3('UitMigrate', 'import', array(
+    'UitType' => "events",
+));
+```

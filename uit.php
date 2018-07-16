@@ -59,7 +59,8 @@ function uit_civicrm_enable() {
   // Set default config variable.
   $config['events'] = [
     'status' => 1,
-    //'modified' => strtotime("now"),
+    'event_type_id' => 1,
+    //'modified' => strtotime('now'),
     'modified' => NULL,
     'params' => '',
     'limit' => 250,
