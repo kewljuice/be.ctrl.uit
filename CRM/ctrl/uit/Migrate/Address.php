@@ -1,9 +1,11 @@
 <?php
 
+namespace CRM\ctrl\uit\Migrate;
+
 /**
  * Save JSON data to CiviCRM Address from UiT.
  */
-class CRM_ctrl_uit_migrate_address {
+class Address {
 
   /**
    * @var string
@@ -55,20 +57,20 @@ class CRM_ctrl_uit_migrate_address {
     try {
       // Create Address via CiviCRM API.
       $address = civicrm_api3('Address', 'create', $address_params);
-      Civi::log()
+      \Civi::log()
         ->info("CRM_ctrl_uit_migrate_address->save() Address: " . $address['id'] . " - " . $address_params['external_id']);
-    } catch (Exception $e) {
-      Civi::log()
+    } catch (\CiviCRM_API3_Exception $e) {
+      \Civi::log()
         ->debug("CRM_ctrl_uit_migrate_address->save() Address: " . print_r($e, TRUE));
     }
     if (!$address['is_error']) {
       try {
         // Create LocBlock via CiviCRM API.
         $locblock = civicrm_api3('LocBlock', 'create', ['address_id' => $address['id'],]);
-        Civi::log()
+        \Civi::log()
           ->info("CRM_ctrl_uit_migrate_address->save() LocBlock: " . print_r($locblock['id'], TRUE));
-      } catch (Exception $e) {
-        Civi::log()
+      } catch (\CiviCRM_API3_Exception $e) {
+        \Civi::log()
           ->debug("CRM_ctrl_uit_migrate_address->save() LocBlock: " . print_r($e, TRUE));
       }
       if (!$locblock['is_error']) {

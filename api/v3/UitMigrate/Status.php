@@ -1,5 +1,7 @@
 <?php
 
+use CRM\ctrl\uit\Migrate\Controller;
+
 /**
  * UitMigrate.Status API specification (optional)
  * This is used for documentation and validation.
@@ -36,7 +38,7 @@ function civicrm_api3_uit_migrate_Status($params) {
       case "events":
         // Migrate status.
         $type = 'events';
-        $controller = new CRM_ctrl_uit_migrate_controller($type);
+        $controller = new Controller($type);
         $returnValues = $controller->status();
         return civicrm_api3_create_success($returnValues, $params, 'UitMigrate', 'Status');
         break;

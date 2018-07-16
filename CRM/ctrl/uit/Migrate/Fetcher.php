@@ -1,9 +1,11 @@
 <?php
 
+namespace CRM\ctrl\uit\Migrate;
+
 /**
  * Obtain JSON data from UiT.
  */
-class CRM_ctrl_uit_migrate_fetcher {
+class Fetcher {
 
   /**
    * @var array

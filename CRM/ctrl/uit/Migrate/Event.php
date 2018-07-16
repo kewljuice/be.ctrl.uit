@@ -1,9 +1,11 @@
 <?php
 
+namespace CRM\ctrl\uit\Migrate;
+
 /**
  * Save JSON data to CiviCRM Event from UiT.
  */
-class CRM_ctrl_uit_migrate_event {
+class Event {
 
   /**
    * @var string
@@ -15,7 +17,7 @@ class CRM_ctrl_uit_migrate_event {
    * Constructor.
    */
   function __construct() {
-    $config = CRM_Core_BAO_Setting::getItem('uit', 'uit-config');
+    $config = \CRM_Core_BAO_Setting::getItem('uit', 'uit-config');
     $this->config = json_decode(utf8_decode($config), TRUE);
     $this->type = $this->config['events']['event_type_id'];
   }
@@ -33,7 +35,7 @@ class CRM_ctrl_uit_migrate_event {
     $event['external_id'] = $object['@id'];
 
     // Save Address.
-    $fetcher = new CRM_ctrl_uit_migrate_address();
+    $fetcher = new Address();
     $address = $fetcher->save($object['location']);
     if ($address['loc_block_id']) {
       $event['loc_block_id'] = $address['loc_block_id'];
@@ -48,27 +50,24 @@ class CRM_ctrl_uit_migrate_event {
     $event['start_date'] = date('Y-m-d H:i', strtotime($object['startDate']));
     $event['end_date'] = date('Y-m-d H:i', strtotime($object['endDate']));
 
-    // Insert Event.
-    $result = [
+    // Create Event via CiviCRM API.
+    try {
+      $result = civicrm_api3('Event', 'create', $event);
+      \Civi::log()
+        ->info("CRM_ctrl_uit_migrate_event->save() Event: " . $result['id'] . " - " . $event['external_id']);
+
+    } catch (\CiviCRM_API3_Exception $e) {
+      \Civi::log()
+        ->debug("CRM_ctrl_uit_migrate_event->save() Event: " . print_r($e, TRUE));
+    }
+
+    // @todo: return status (1 Created, 2 Modified, 3 Not modified).
+    $event = [
       'id' => '',
       'status' => 1,
       'event' => $event,
       'address' => $address,
     ];
-
-    // Create Event via CiviCRM API.
-    try {
-      $result = civicrm_api3('Event', 'create', $event);
-      Civi::log()
-        ->info("CRM_ctrl_uit_migrate_event->save() Event: " . $result['id'] . " - " . $event['external_id']);
-
-    } catch (Exception $e) {
-      Civi::log()
-        ->debug("CRM_ctrl_uit_migrate_event->save() Event: " . print_r($e, TRUE));
-    }
-
-    // @todo: return status (1 Created, 2 Modified, 3 Not modified).
-    $event["status"] = 1;
 
     // Return.
     return $event;

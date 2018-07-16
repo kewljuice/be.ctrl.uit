@@ -1,9 +1,11 @@
 <?php
 
+namespace CRM\ctrl\uit\Migrate;
+
 /**
  * Controller for item actions.
  */
-class CRM_ctrl_uit_migrate_controller {
+class Controller {
 
   /**
    * @var string
@@ -54,9 +56,9 @@ class CRM_ctrl_uit_migrate_controller {
     // Set type.
     $this->type = $type;
     // Set config & settings from parameters.
-    $settings = CRM_Core_BAO_Setting::getItem('uit', 'uit-settings');
+    $settings = \CRM_Core_BAO_Setting::getItem('uit', 'uit-settings');
     $this->settings = json_decode($settings, TRUE);
-    $config = CRM_Core_BAO_Setting::getItem('uit', 'uit-config');
+    $config = \CRM_Core_BAO_Setting::getItem('uit', 'uit-config');
     $this->config = json_decode(utf8_decode($config), TRUE);
     // Set host.
     $this->host = $this->settings['uit_host'] . $this->type;
@@ -80,7 +82,7 @@ class CRM_ctrl_uit_migrate_controller {
     $post['start'] = 0;
     $post['limit'] = 1;
     // Fetch count from UiT API.
-    $fetcher = new CRM_ctrl_uit_migrate_fetcher($this->key);
+    $fetcher = new Fetcher($this->key);
     $response = $fetcher->getJSON($this->host, $post);
     // Create status array.
     $status = [
@@ -118,7 +120,7 @@ class CRM_ctrl_uit_migrate_controller {
         $post['start'] = $step;
         $post['limit'] = $this->limit;
         // Initial fetch from UiT API.
-        $fetcher = new CRM_ctrl_uit_migrate_fetcher($this->key);
+        $fetcher = new Fetcher($this->key);
         $response = $fetcher->getJSON($this->host, $post);
         if (isset($response['member'])) {
           foreach ($response['member'] as $value) {
@@ -129,7 +131,7 @@ class CRM_ctrl_uit_migrate_controller {
             switch ($this->type) {
               case "events":
                 // Create Event.
-                $fetcher = new CRM_ctrl_uit_migrate_event();
+                $fetcher = new Event();
                 $items[$value['@id']]['status'] = $fetcher->save($value);
                 break;
               default:
@@ -140,7 +142,7 @@ class CRM_ctrl_uit_migrate_controller {
         // Next.
         $step += $this->limit;
         // @todo: remove when API can handle more that 10000 items.
-        if ($step >= 10000) {
+        if ($step >= 250) {
           break;
         }
       } while ($count >= $step);

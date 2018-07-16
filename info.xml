@@ -24,4 +24,7 @@
   <civix>
     <namespace>CRM/ctrl/uit</namespace>
   </civix>
+  <classloader>
+    <psr4 prefix='CRM\ctrl\uit\' path='CRM/ctrl/uit'/>
+  </classloader>
 </extension>
