@@ -1,33 +1,92 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 
 <table>
-  <base>CRM/ctrl/uit</base>
-  <class>UitMigrate</class>
-  <name>civicrm_uit_migrate</name>
-  <comment>FIXME</comment>
-  <log>true</log>
+    <base>CRM/ctrl/uit</base>
+    <class>UitMigrate</class>
+    <name>civicrm_uit_migrate</name>
+    <comment>Table for UitMigrate.</comment>
+    <log>true</log>
+    <add>1.0</add>
 
-  <field>
-    <name>id</name>
-    <type>int unsigned</type>
-    <required>true</required>
-    <comment>Unique UitMigrate ID</comment>
-  </field>
-  <primaryKey>
-    <name>id</name>
-    <autoincrement>true</autoincrement>
-  </primaryKey>
+    <field>
+        <name>source_id</name>
+        <title>Source id</title>
+        <type>varchar</type>
+        <length>255</length>
+        <required>true</required>
+        <unique>true</unique>
+        <comment>Unique Source ID</comment>
+        <add>1.0</add>
+        <html>
+            <type>Text</type>
+        </html>
+    </field>
+    <primaryKey>
+        <name>source_id</name>
+    </primaryKey>
 
-  <field>
-    <name>contact_id</name>
-    <type>int unsigned</type>
-    <comment>FK to Contact</comment>
-  </field>
-  <foreignKey>
-    <name>contact_id</name>
-    <table>civicrm_contact</table>
-    <key>id</key>
-    <onDelete>CASCADE</onDelete>
-  </foreignKey>
+    <field>
+        <name>dest_id</name>
+        <title>Destination id</title>
+        <type>int unsigned</type>
+        <required>true</required>
+        <unique>true</unique>
+        <comment>Unique Destination ID</comment>
+        <add>1.0</add>
+        <html>
+            <type>Text</type>
+        </html>
+    </field>
+
+    <field>
+        <name>type</name>
+        <title>Type</title>
+        <required>true</required>
+        <type>varchar</type>
+        <length>255</length>
+        <comment>Entity type</comment>
+        <add>1.0</add>
+        <html>
+            <type>Text</type>
+        </html>
+    </field>
+
+    <field>
+        <name>status</name>
+        <title>Status</title>
+        <required>true</required>
+        <type>varchar</type>
+        <length>255</length>
+        <comment>Status</comment>
+        <add>1.0</add>
+        <html>
+            <type>Text</type>
+        </html>
+    </field>
+
+    <field>
+        <name>hash</name>
+        <title>Hash</title>
+        <required>true</required>
+        <type>varchar</type>
+        <length>255</length>
+        <comment>Hash</comment>
+        <add>1.0</add>
+        <html>
+            <type>Text</type>
+        </html>
+    </field>
+
+    <field>
+        <name>modified</name>
+        <title>Modified</title>
+        <required>true</required>
+        <type>timestamp</type>
+        <comment>Modified.</comment>
+        <add>1.0</add>
+        <html>
+            <type>Select Date</type>
+        </html>
+    </field>
 
 </table>
