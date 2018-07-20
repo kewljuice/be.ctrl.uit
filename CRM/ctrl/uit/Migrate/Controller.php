@@ -135,7 +135,7 @@ class Controller {
                 $items[$value['@id']]['status'] = $fetcher->save($value);
                 break;
               default:
-                // @todo: Implement Create for other UiT types. (places, ...)
+                // @todo: Implement other UiT types. (places, ...)
             }
           }
         }
