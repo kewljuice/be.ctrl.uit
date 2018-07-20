@@ -20,7 +20,9 @@ function _civicrm_api3_uit_migrate_Create_spec(&$spec) {
   ];
   $spec['status']['api.required'] = 1;
   $spec['status']['options'] = [
-    'active' => 'Active',
+    'new' => 'New',
+    'update' => 'Update',
+    'ignore' => 'Ignore',
   ];
   $spec['hash']['api.required'] = 1;
 }

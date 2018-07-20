@@ -107,7 +107,6 @@ class Controller {
     $status = $this->status();
 
     if (isset($status['count'])) {
-      $return = $status;
       // Paged API calls!
       $count = $status['count'];
       $step = 0;
@@ -124,15 +123,12 @@ class Controller {
         $response = $fetcher->getJSON($this->host, $post);
         if (isset($response['member'])) {
           foreach ($response['member'] as $value) {
-            $items[$value['@id']]['id'] = $value['@id'];
-            $items[$value['@id']]['hash'] = md5(serialize($value));
-            $items[$value['@id']]['type'] = $this->type;
             // Save UiT type to CiviCRM.
             switch ($this->type) {
               case "events":
                 // Create Event.
                 $fetcher = new Event();
-                $items[$value['@id']]['status'] = $fetcher->save($value);
+                $items[]= $fetcher->save($value);
                 break;
               default:
                 // @todo: Implement other UiT types. (places, ...)
@@ -142,15 +138,15 @@ class Controller {
         // Next.
         $step += $this->limit;
         // @todo: remove when API can handle more that 10000 items.
-        if ($step >= 250) {
+        if ($step >= 500) {
           break;
         }
       } while ($count >= $step);
-      $return['items'] = $items;
+      $return = $items;
     }
     else {
       // Return error.
-      $return['error'] = $status;
+      $return[] = $status;
     }
     return $return;
   }
