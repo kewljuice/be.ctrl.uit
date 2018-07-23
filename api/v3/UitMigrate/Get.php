@@ -25,12 +25,9 @@ function _civicrm_api3_uit_migrate_Get_spec(&$spec) {
  */
 function civicrm_api3_uit_migrate_Get($params) {
   if (array_key_exists('source_id', $params)) {
-    // Fetch by source_id.
     $result = \CRM_ctrl_uit_BAO_UitMigrate::retrieve($params['source_id']);
     if (!empty($result)) {
-      // Return values.
       $returnValues[] = $result;
-      // Spec: civicrm_api3_create_success($values = 1, $params = array(), $entity = NULL, $action = NULL)
       return civicrm_api3_create_success($returnValues, $params, 'UitMigrate', 'Get');
     }
     else {

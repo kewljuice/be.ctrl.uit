@@ -31,12 +31,9 @@ function _civicrm_api3_uit_migrate_Status_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_uit_migrate_Status($params) {
-  // Check if 'UitType' is given.
   if (array_key_exists('UitType', $params)) {
-    // Switch UitType.
     switch ($params['UitType']) {
       case "events":
-        // Migrate status.
         $type = 'events';
         $controller = new Controller($type);
         $returnValues = $controller->status();

@@ -30,10 +30,10 @@ class Event {
    * @return array result
    */
   public function save($object) {
-
     // Check if Event exists in UitMigrate table.
     $hash = md5(serialize($object));
     $dest_id = NULL;
+    $location = [];
     try {
       $check = civicrm_api3('UitMigrate', 'get', [
         'sequential' => 1,
@@ -47,19 +47,14 @@ class Event {
     } catch (\CiviCRM_API3_Exception $e) {
       $status = 'new';
     }
-
     // Skip status 'ignore'.
     if ($status != 'ignore') {
-
-      // Save Address.
-      /*
-      $fetcher = new Address();
-      $address = $fetcher->save($object['location']);
-      if ($address['dest_id']) {
-        $event['loc_block_id'] = $address['dest_id'];
+      // Save Location.
+      $fetcher = new Location();
+      $location = $fetcher->save($object['location']);
+      if ($location['dest_id']) {
+        $event['loc_block_id'] = $location['dest_id'];
       }
-      */
-
       // Add 'event_id' for update.
       if ($status == 'update') {
         $event['id'] = $dest_id;
@@ -72,12 +67,11 @@ class Event {
       $event['is_active'] = 0;
       $event['start_date'] = date('Y-m-d H:i', strtotime($object['startDate']));
       $event['end_date'] = date('Y-m-d H:i', strtotime($object['endDate']));
-      // Create Event via CiviCRM API.
       try {
+        // Create Event via CiviCRM API.
         $result = civicrm_api3('Event', 'create', $event);
         \Civi::log()
           ->info("CRM_ctrl_uit_migrate_event->save() Event: " . $result['id'] . " - " . $event['external_id']);
-
       } catch (\CiviCRM_API3_Exception $e) {
         \Civi::log()
           ->debug("CRM_ctrl_uit_migrate_event->save() Event: " . print_r($e, TRUE));
@@ -106,6 +100,7 @@ class Event {
         'status' => $status,
         'type' => 'events',
       ],
+      'location' => $location,
     ];
     return $return;
   }
@@ -118,28 +113,21 @@ class Event {
    * @return string clear_string
    */
   protected function remove_emoji($string) {
-
     // Match Emoticons
     $regex_emoticons = '/[\x{1F600}-\x{1F64F}]/u';
     $clear_string = preg_replace($regex_emoticons, '', $string);
-
     // Match Miscellaneous Symbols and Pictographs
     $regex_symbols = '/[\x{1F300}-\x{1F5FF}]/u';
     $clear_string = preg_replace($regex_symbols, '', $clear_string);
-
     // Match Transport And Map Symbols
     $regex_transport = '/[\x{1F680}-\x{1F6FF}]/u';
     $clear_string = preg_replace($regex_transport, '', $clear_string);
-
     // Match Miscellaneous Symbols
     $regex_misc = '/[\x{2600}-\x{26FF}]/u';
     $clear_string = preg_replace($regex_misc, '', $clear_string);
-
     // Match Dingbats
     $regex_dingbats = '/[\x{2700}-\x{27BF}]/u';
     $clear_string = preg_replace($regex_dingbats, '', $clear_string);
-
     return $clear_string;
   }
-
 }

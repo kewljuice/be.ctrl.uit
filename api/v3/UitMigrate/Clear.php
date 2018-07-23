@@ -14,8 +14,8 @@ function _civicrm_api3_uit_migrate_Clear_spec(&$spec) {
   $spec['type']['options'] = [
     'all' => '*',
     'events' => 'UiT Events',
-    'address' => 'UiT Address',
     'places' => 'UiT Places',
+    'location' => 'UiT Location',
   ];
 }
 
@@ -31,11 +31,9 @@ function _civicrm_api3_uit_migrate_Clear_spec(&$spec) {
  */
 function civicrm_api3_uit_migrate_Clear($params) {
   if (array_key_exists('type', $params)) {
-    // Switch type.
     switch ($params['type']) {
       case "all":
         $result = \CRM_ctrl_uit_BAO_UitMigrate::clear('all');
-        // Return values.
         $returnValues = [
           1 => ['type' => "all"],
         ];
@@ -43,7 +41,6 @@ function civicrm_api3_uit_migrate_Clear($params) {
         break;
       case "events";
         $result = \CRM_ctrl_uit_BAO_UitMigrate::clear('events');
-        // Return values.
         $returnValues = [
           1 => ['type' => "events"],
         ];

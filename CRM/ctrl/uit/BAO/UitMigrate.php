@@ -96,15 +96,15 @@ class CRM_ctrl_uit_BAO_UitMigrate extends CRM_ctrl_uit_DAO_UitMigrate {
     // Check type.
     if ($type == "all") {
       $query = "DELETE FROM civicrm_uit_migrate";
-      CRM_Core_DAO::executeQuery($query);
+      /* CRM_Core_DAO::executeQuery($query); */
     }
     else {
       $query = 'DELETE FROM civicrm_uit_migrate WHERE type = "%1"';
-      CRM_Core_DAO::executeQuery($query, [
+      /* CRM_Core_DAO::executeQuery($query, [
         1 => [$type, 'String', CRM_Core_DAO::QUERY_FORMAT_NO_QUOTES],
       ]);
+      */
     }
     return NULL;
   }
-
 }

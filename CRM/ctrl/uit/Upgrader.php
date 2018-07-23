@@ -130,5 +130,4 @@ class CRM_ctrl_uit_Upgrader extends CRM_ctrl_uit_Upgrader_Base {
     }
     return TRUE;
   } // */
-
 }

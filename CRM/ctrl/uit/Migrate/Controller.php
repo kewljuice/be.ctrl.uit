@@ -128,17 +128,17 @@ class Controller {
               case "events":
                 // Create Event.
                 $fetcher = new Event();
-                $items[]= $fetcher->save($value);
+                $items[] = $fetcher->save($value);
                 break;
               default:
                 // @todo: Implement other UiT types. (places, ...)
             }
           }
         }
-        // Next.
+        // Next step.
         $step += $this->limit;
         // @todo: remove when API can handle more that 10000 items.
-        if ($step >= 500) {
+        if ($step >= 750) {
           break;
         }
       } while ($count >= $step);
@@ -154,5 +154,4 @@ class Controller {
   public function rollback() {
     return "rollback";
   }
-
 }

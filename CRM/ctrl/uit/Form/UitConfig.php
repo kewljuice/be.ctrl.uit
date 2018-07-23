@@ -67,5 +67,4 @@ class CRM_ctrl_uit_Form_UitConfig extends CRM_Core_Form {
     }
     return $elementNames;
   }
-
 }

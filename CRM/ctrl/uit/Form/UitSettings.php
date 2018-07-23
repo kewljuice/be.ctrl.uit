@@ -114,5 +114,4 @@ class CRM_ctrl_uit_Form_UitSettings extends CRM_Core_Form {
     }
     return empty($errors) ? TRUE : $errors;
   }
-
 }

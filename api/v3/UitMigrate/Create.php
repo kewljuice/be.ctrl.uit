@@ -15,8 +15,8 @@ function _civicrm_api3_uit_migrate_Create_spec(&$spec) {
   $spec['type']['api.required'] = 1;
   $spec['type']['options'] = [
     'events' => 'UiT Events',
-    'address' => 'UiT Address',
     'places' => 'UiT Places',
+    'location' => 'UiT Location',
   ];
   $spec['status']['api.required'] = 1;
   $spec['status']['options'] = [
@@ -46,9 +46,7 @@ function civicrm_api3_uit_migrate_Create($params) {
     // Insert/Update UitMigrate record.
     $result = \CRM_ctrl_uit_BAO_UitMigrate::create($params);
     if (!empty($result)) {
-      // Return values.
       $returnValues[] = $result;
-      // Spec: civicrm_api3_create_success($values = 1, $params = array(), $entity = NULL, $action = NULL)
       return civicrm_api3_create_success($returnValues, $params, 'UitMigrate', 'Create');
     }
     else {

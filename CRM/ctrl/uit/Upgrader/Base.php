@@ -372,5 +372,4 @@ class CRM_ctrl_uit_Upgrader_Base {
       default:
     }
   }
-
 }
