@@ -72,7 +72,7 @@ class Event {
         $result = civicrm_api3('Event', 'create', $event);
       } catch (\CiviCRM_API3_Exception $e) {
         \Civi::log()
-          ->debug("CRM_ctrl_uit_migrate_event->save() Event: " . print_r($e, TRUE));
+          ->debug("CRM_ctrl_uit_migrate_event->save() Event: " . $e->getMessage());
       }
       // Save UitMigrate record.
       if (isset($result['id'])) {
@@ -86,7 +86,7 @@ class Event {
           civicrm_api3('UitMigrate', 'create', $params);
         } catch (\CiviCRM_API3_Exception $e) {
           \Civi::log()
-            ->debug("CRM_ctrl_uit_migrate_event->save() UitMigrate: " . print_r($e, TRUE));
+            ->debug("CRM_ctrl_uit_migrate_event->save() UitMigrate: " .$e->getMessage());
         }
       }
     }

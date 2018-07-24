@@ -63,11 +63,9 @@ class Location {
             try {
               // Create LocBlock via CiviCRM API.
               $locblock = civicrm_api3('LocBlock', 'create', ['address_id' => $address['id'],]);
-              \Civi::log()
-                ->info("CRM_ctrl_uit_migrate_location->new() LocBlock: " . print_r($locblock['id'], TRUE));
             } catch (\CiviCRM_API3_Exception $e) {
               \Civi::log()
-                ->debug("CRM_ctrl_uit_migrate_location->new() LocBlock: " . print_r($e, TRUE));
+                ->debug("CRM_ctrl_uit_migrate_location->new() LocBlock: " . $e->getMessage());
             }
             if (!$locblock['is_error']) {
               $dest_id = $locblock['id'];
@@ -93,11 +91,9 @@ class Location {
               'return' => ['address_id'],
               'id' => $dest_id,
             ]);
-            \Civi::log()
-              ->info("CRM_ctrl_uit_migrate_location->update() LocBlock: " . print_r($locblock['id'], TRUE));
           } catch (\CiviCRM_API3_Exception $e) {
             \Civi::log()
-              ->debug("CRM_ctrl_uit_migrate_location->update() LocBlock: " . print_r($e, TRUE));
+              ->debug("CRM_ctrl_uit_migrate_location->update() LocBlock: " . $e->getMessage());
           }
           if (isset($locblock['address_id'])) {
             // Update address.
@@ -193,7 +189,7 @@ class Location {
       $address = civicrm_api3('Address', 'create', $address_params);
     } catch (\CiviCRM_API3_Exception $e) {
       \Civi::log()
-        ->debug("CRM_ctrl_uit_migrate_location->saveAddress(): " . print_r($e, TRUE));
+        ->debug("CRM_ctrl_uit_migrate_location->saveAddress(): " . $e->getMessage());
     }
     // Return.
     return $address;
@@ -217,7 +213,7 @@ class Location {
       civicrm_api3('UitMigrate', 'create', $params);
     } catch (\CiviCRM_API3_Exception $e) {
       \Civi::log()
-        ->debug("CRM_ctrl_uit_migrate_location->saveUitMigrate(): " . print_r($e, TRUE));
+        ->debug("CRM_ctrl_uit_migrate_location->saveUitMigrate(): " . $e->getMessage());
     }
   }
 }
