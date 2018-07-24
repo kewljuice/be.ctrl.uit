@@ -35,7 +35,6 @@ class Location {
         'source_id' => $source_id,
         'dest_id' => '',
         'status' => 'error',
-        'type' => 'location',
       ];
     }
     else {
@@ -84,7 +83,6 @@ class Location {
             'source_id' => $source_id,
             'dest_id' => $dest_id,
             'status' => $status,
-            'type' => 'location',
           ];
           break;
         case 'update':
@@ -114,7 +112,6 @@ class Location {
             'source_id' => $source_id,
             'dest_id' => $dest_id,
             'status' => $status,
-            'type' => 'location',
           ];
           break;
         case 'ignore':
@@ -122,7 +119,6 @@ class Location {
             'source_id' => $source_id,
             'dest_id' => $dest_id,
             'status' => $status,
-            'type' => 'location',
           ];
           break;
       }
@@ -195,8 +191,6 @@ class Location {
     try {
       // Create Address via CiviCRM API.
       $address = civicrm_api3('Address', 'create', $address_params);
-      \Civi::log()
-        ->info("CRM_ctrl_uit_migrate_location->saveAddress(): " . $address['id'] . " - " . $address_params['external_id']);
     } catch (\CiviCRM_API3_Exception $e) {
       \Civi::log()
         ->debug("CRM_ctrl_uit_migrate_location->saveAddress(): " . print_r($e, TRUE));

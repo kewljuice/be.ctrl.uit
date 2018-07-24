@@ -110,9 +110,11 @@ class Controller {
       // Paged API calls!
       $count = $status['count'];
       $step = 0;
-      $items = [];
       // Loop.
       do {
+        // Log start
+        \Civi::log()
+          ->info("CRM_ctrl_uit_migrate_controller->import() started");
         // Set post parameters.
         $post['q'] = $this->params;
         $post['embed'] = 'true';
@@ -128,7 +130,10 @@ class Controller {
               case "events":
                 // Create Event.
                 $fetcher = new Event();
-                $items[] = $fetcher->save($value);
+                $save = $fetcher->save($value);
+                // Log.
+                \Civi::log()
+                  ->info("CRM_ctrl_uit_migrate_controller->import() " . print_r($save, TRUE));
                 break;
               default:
                 // @todo: Implement other UiT types. (places, ...)
@@ -138,11 +143,14 @@ class Controller {
         // Next step.
         $step += $this->limit;
         // @todo: remove when API can handle more that 10000 items.
-        if ($step >= 750) {
+        if ($step >= 10000) {
           break;
         }
       } while ($count >= $step);
-      $return = $items;
+      // Log stop
+      \Civi::log()
+        ->info("CRM_ctrl_uit_migrate_controller->import() stopped");
+      $return = $status;
     }
     else {
       // Return error.

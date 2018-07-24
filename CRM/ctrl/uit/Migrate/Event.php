@@ -70,8 +70,6 @@ class Event {
       try {
         // Create Event via CiviCRM API.
         $result = civicrm_api3('Event', 'create', $event);
-        \Civi::log()
-          ->info("CRM_ctrl_uit_migrate_event->save() Event: " . $result['id'] . " - " . $event['external_id']);
       } catch (\CiviCRM_API3_Exception $e) {
         \Civi::log()
           ->debug("CRM_ctrl_uit_migrate_event->save() Event: " . print_r($e, TRUE));
@@ -98,7 +96,6 @@ class Event {
         'source_id' => $object['@id'],
         'dest_id' => $dest_id,
         'status' => $status,
-        'type' => 'events',
       ],
       'location' => $location,
     ];
