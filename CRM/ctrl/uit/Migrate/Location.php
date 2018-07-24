@@ -147,22 +147,51 @@ class Location {
     }
     // Address parameters.
     $address_params['location_type_id'] = $this->type;
-    $address_params['contact_id'] = 'user_contact_id';
+    $address_params['contact_id'] = 2;
+    /*$address_params['contact_id'] = 'user_contact_id';*/
+
+    // name.
     if (isset($object['name']['nl'])) {
       $address_params['name'] = $object['name']['nl'];
     }
-    if (isset($object['streetAddress'])) {
-      $address_params['street_address'] = $object['streetAddress'];
+
+    // without [nl].
+    if (isset($object['address']['streetAddress'])) {
+      $address_params['street_address'] = $object['address']['streetAddress'];
     }
-    if (isset($object['postalCode'])) {
-      $address_params['postal_code'] = $object['postalCode'];
+    if (isset($object['address']['postalCode'])) {
+      $address_params['postal_code'] = $object['address']['postalCode'];
     }
-    if (isset($object['addressLocality'])) {
-      $address_params['city'] = $object['addressLocality'];
+    if (isset($object['address']['addressLocality'])) {
+      $address_params['city'] = $object['address']['addressLocality'];
     }
-    if (isset($object['addressCountry'])) {
-      $address_params['country'] = $object['addressCountry'];
+    if (isset($object['address']['addressCountry'])) {
+      $address_params['country'] = $object['address']['addressCountry'];
     }
+
+    // with [nl].
+    if (isset($object['address']['nl']['streetAddress'])) {
+      $address_params['street_address'] = $object['address']['nl']['streetAddress'];
+    }
+    if (isset($object['address']['nl']['postalCode'])) {
+      $address_params['postal_code'] = $object['address']['nl']['postalCode'];
+    }
+    if (isset($object['address']['nl']['addressLocality'])) {
+      $address_params['city'] = $object['address']['nl']['addressLocality'];
+    }
+    if (isset($object['address']['nl']['addressCountry'])) {
+      $address_params['country'] = $object['address']['nl']['addressCountry'];
+    }
+
+    // Latitude
+    if (isset($object['geo']['latitude'])) {
+      $address_params['geo_code_1'] = $object['geo']['latitude'];
+    }
+    // Longitude
+    if (isset($object['geo']['longitude'])) {
+      $address_params['geo_code_2'] = $object['geo']['longitude'];
+    }
+
     try {
       // Create Address via CiviCRM API.
       $address = civicrm_api3('Address', 'create', $address_params);
