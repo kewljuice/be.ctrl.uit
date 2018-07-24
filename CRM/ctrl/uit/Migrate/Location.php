@@ -29,15 +29,15 @@ class Location {
    */
   public function save($object) {
     // Check if source_id exists.
-    $source_id = $object['@id'];
-    if (!isset($source_id) || is_null($source_id)) {
+    if (!isset($object['@id']) || is_null($object['@id'])) {
       $return = [
-        'source_id' => $source_id,
+        'source_id' => NULL,
         'dest_id' => '',
         'status' => 'error',
       ];
     }
     else {
+      $source_id = $object['@id'];
       // Check if Address exists in UitMigrate table.
       $hash = md5(serialize($object));
       $dest_id = NULL;

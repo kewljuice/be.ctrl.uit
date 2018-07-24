@@ -61,9 +61,16 @@ class Event {
       }
       // Event parameters.
       $event['event_type_id'] = $this->type;
-      $event['title'] = $this->remove_emoji($object['name']['nl']);
-      $event['summary'] = '';
-      $event['description'] = $this->remove_emoji($object['description']['nl']);
+      if (isset($object['name']['nl'])) {
+        $event['title'] = $this->remove_emoji($object['name']['nl']);
+      }
+      else {
+        $event['title'] = $object['@id'];
+      }
+      /* $event['summary'] = ''; */
+      if (isset($object['description']['nl'])) {
+        $event['description'] = $this->remove_emoji($object['description']['nl']);
+      }
       $event['is_active'] = 0;
       $event['start_date'] = date('Y-m-d H:i', strtotime($object['startDate']));
       $event['end_date'] = date('Y-m-d H:i', strtotime($object['endDate']));
@@ -86,7 +93,7 @@ class Event {
           civicrm_api3('UitMigrate', 'create', $params);
         } catch (\CiviCRM_API3_Exception $e) {
           \Civi::log()
-            ->debug("CRM_ctrl_uit_migrate_event->save() UitMigrate: " .$e->getMessage());
+            ->debug("CRM_ctrl_uit_migrate_event->save() UitMigrate: " . $e->getMessage());
         }
       }
     }
