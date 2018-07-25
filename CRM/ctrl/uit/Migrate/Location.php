@@ -27,7 +27,7 @@ class Location {
    *
    * @return array result
    */
-  public function save($object) {
+  public function save(&$object) {
     // Check if source_id exists.
     if (!isset($object['@id']) || is_null($object['@id'])) {
       $return = [
@@ -59,7 +59,7 @@ class Location {
         case 'new':
           // Save address.
           $address = $this->saveAddress(NULL, $object);
-          if (!$address['is_error']) {
+          if (isset($address['is_error']) && !$address['is_error']) {
             try {
               // Create LocBlock via CiviCRM API.
               $locblock = civicrm_api3('LocBlock', 'create', ['address_id' => $address['id'],]);
@@ -67,7 +67,7 @@ class Location {
               \Civi::log()
                 ->debug("CRM_ctrl_uit_migrate_location->new() LocBlock: " . $e->getMessage());
             }
-            if (!$locblock['is_error']) {
+            if (isset($locblock['is_error']) && !$locblock['is_error']) {
               $dest_id = $locblock['id'];
               $params['loc_block_id'] = $dest_id;
             }
@@ -119,6 +119,9 @@ class Location {
           break;
       }
     }
+    $source_id = NULL;
+    $dest_id = NULL;
+    $status = NULL;
     // Return.
     return $return;
   }
@@ -131,7 +134,7 @@ class Location {
    *
    * @return array result
    */
-  private function saveAddress($id, $object) {
+  private function saveAddress($id, &$object) {
     $address = [];
     // Address id.
     if (!is_null($id)) {
@@ -191,6 +194,8 @@ class Location {
       \Civi::log()
         ->debug("CRM_ctrl_uit_migrate_location->saveAddress(): " . $e->getMessage());
     }
+    // Unset.
+    $address_params = NULL;
     // Return.
     return $address;
   }
@@ -203,7 +208,7 @@ class Location {
    * @param string $status
    * @param string $hash
    */
-  private function saveUitMigrate($source_id, $dest_id, $status, $hash) {
+  private function saveUitMigrate(&$source_id, &$dest_id, &$status, &$hash) {
     $params['source_id'] = $source_id;
     $params['dest_id'] = $dest_id;
     $params['type'] = 'location';
@@ -215,5 +220,7 @@ class Location {
       \Civi::log()
         ->debug("CRM_ctrl_uit_migrate_location->saveUitMigrate(): " . $e->getMessage());
     }
+    // Unset.
+    $params = NULL;
   }
 }

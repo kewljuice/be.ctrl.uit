@@ -29,7 +29,7 @@ class Event {
    *
    * @return array result
    */
-  public function save($object) {
+  public function save(&$object) {
     // Check if Event exists in UitMigrate table.
     $hash = md5(serialize($object));
     $dest_id = NULL;
@@ -47,14 +47,17 @@ class Event {
     } catch (\CiviCRM_API3_Exception $e) {
       $status = 'new';
     }
+
+    // @todo: move after 'ignore'? - Save Location.
+    $fetcher = new Location();
+    $location = $fetcher->save($object['location']);
+    if ($location['dest_id']) {
+      $event['loc_block_id'] = $location['dest_id'];
+    }
+
     // Skip status 'ignore'.
     if ($status != 'ignore') {
-      // Save Location.
-      $fetcher = new Location();
-      $location = $fetcher->save($object['location']);
-      if ($location['dest_id']) {
-        $event['loc_block_id'] = $location['dest_id'];
-      }
+
       // Add 'event_id' for update.
       if ($status == 'update') {
         $event['id'] = $dest_id;
@@ -81,6 +84,7 @@ class Event {
         \Civi::log()
           ->debug("CRM_ctrl_uit_migrate_event->save() Event: " . $e->getMessage());
       }
+      $event = NULL;
       // Save UitMigrate record.
       if (isset($result['id'])) {
         $dest_id = $result['id'];
@@ -95,6 +99,7 @@ class Event {
           \Civi::log()
             ->debug("CRM_ctrl_uit_migrate_event->save() UitMigrate: " . $e->getMessage());
         }
+        $params = NULL;
       }
     }
     // Return.
@@ -106,6 +111,12 @@ class Event {
       ],
       'location' => $location,
     ];
+    // Unset.
+    $hash = NULL;
+    $dest_id = NULL;
+    $status = NULL;
+    $location = NULL;
+    // Return.
     return $return;
   }
 
@@ -116,7 +127,7 @@ class Event {
    *
    * @return string clear_string
    */
-  protected function remove_emoji($string) {
+  protected function remove_emoji(&$string) {
     // Match Emoticons
     $regex_emoticons = '/[\x{1F600}-\x{1F64F}]/u';
     $clear_string = preg_replace($regex_emoticons, '', $string);

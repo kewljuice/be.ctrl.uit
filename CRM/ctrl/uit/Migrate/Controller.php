@@ -84,6 +84,9 @@ class Controller {
     // Fetch count from UiT API.
     $fetcher = new Fetcher($this->key);
     $response = $fetcher->getJSON($this->host, $post);
+    // Log 'status' response.
+    \Civi::log()
+      ->info("CRM_ctrl_uit_migrate_controller->status() " . print_r($response, TRUE));
     // Create status array.
     $status = [
       'host' => $this->host,
@@ -101,6 +104,11 @@ class Controller {
     return $status;
   }
 
+  /**
+   * Migrate Import.
+   *
+   * @return array
+   */
   public function import() {
 
     // Fetch status.
@@ -114,7 +122,7 @@ class Controller {
       do {
         // Log start
         \Civi::log()
-          ->info("CRM_ctrl_uit_migrate_controller->import() started");
+          ->info("CRM_ctrl_uit_migrate_controller->import() started " . $step . "  " . $this->limit . " " . memory_get_usage());
         // Set post parameters.
         $post['q'] = $this->params;
         $post['embed'] = 'true';
@@ -129,17 +137,28 @@ class Controller {
             switch ($this->type) {
               case "events":
                 // Create Event.
-                $fetcher = new Event();
-                $save = $fetcher->save($value);
-                // Log.
+                $event = new Event();
+                $save = $event->save($value);
+                // Log result.
                 \Civi::log()
                   ->info("CRM_ctrl_uit_migrate_controller->import() " . print_r($save, TRUE));
+                // Unset variables.
+                $event = NULL;
+                $save = NULL;
                 break;
               default:
                 // @todo: Implement other UiT types. (places, ...)
             }
           }
         }
+        else {
+          // Log 'import' error response.
+          \Civi::log()
+            ->info("CRM_ctrl_uit_migrate_controller->response_error() " . print_r($response, TRUE));
+        }
+        // Unset variables.
+        $fetcher = NULL;
+        $response = NULL;
         // Next step.
         $step += $this->limit;
         // @todo: remove when API can handle more that 10000 items.
@@ -159,7 +178,13 @@ class Controller {
     return $return;
   }
 
+  /**
+   * Migrate rollback.
+   *
+   * @return array
+   */
   public function rollback() {
     return "rollback";
   }
+
 }
