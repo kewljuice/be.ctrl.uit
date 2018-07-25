@@ -74,6 +74,7 @@ class Location {
           }
           // Save to UitMigrate.
           if (isset($locblock['id'])) {
+            // Save UitMigrate record.
             $this->saveUitMigrate($source_id, $dest_id, $status, $hash);
           }
           // Result.
@@ -193,6 +194,10 @@ class Location {
     } catch (\CiviCRM_API3_Exception $e) {
       \Civi::log()
         ->debug("CRM_ctrl_uit_migrate_location->saveAddress(): " . $e->getMessage());
+    }
+    if (isset($address['id'])) {
+      // Invoke 'civicrm_uit' hook
+      \CRM_Utils_Uit::Uit('create', 'address', $address['id'], $object);
     }
     // Unset.
     $address_params = NULL;

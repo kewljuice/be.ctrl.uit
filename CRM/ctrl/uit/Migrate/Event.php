@@ -85,8 +85,10 @@ class Event {
           ->debug("CRM_ctrl_uit_migrate_event->save() Event: " . $e->getMessage());
       }
       $event = NULL;
-      // Save UitMigrate record.
       if (isset($result['id'])) {
+        // Invoke 'civicrm_uit' hook
+        \CRM_Utils_Uit::Uit('create', 'events', $result['id'], $object);
+        // Save UitMigrate record.
         $dest_id = $result['id'];
         $params['source_id'] = $object['@id'];
         $params['dest_id'] = $dest_id;

@@ -46,3 +46,19 @@ $result = civicrm_api3('UitMigrate', 'import', array(
     'UitType' => "events",
 ));
 ```
+
+## Custom hook
+
+```
+/**
+ * Implements hook_civicrm_uit().
+ */
+function uit_civicrm_uit($op, $objectName, $id, &$params) {
+  // https://forum.civicrm.org/index.php%3Ftopic=29999.0.html
+  print("action: " . $op . '<br>');
+  print("entity: " . $objectName . '<br>');
+  print("entity id: " . $id . '<br>');
+  print("object: " . print_r($params, TRUE) . '<br>');
+  
+}
+```
