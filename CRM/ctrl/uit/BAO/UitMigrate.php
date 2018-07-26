@@ -85,7 +85,7 @@ class CRM_ctrl_uit_BAO_UitMigrate extends CRM_ctrl_uit_DAO_UitMigrate {
   }
 
   /**
-   * Remove UitMigrate based on type.
+   * Clear from CiviCRM/UitMigrate based on type.
    *
    * @param string $type
    *   (reference ) $type.
@@ -93,17 +93,37 @@ class CRM_ctrl_uit_BAO_UitMigrate extends CRM_ctrl_uit_DAO_UitMigrate {
    * @return array|null
    */
   public static function clear($type) {
-    // Check type.
-    if ($type == "all") {
-      $query = "DELETE FROM civicrm_uit_migrate";
-      /* CRM_Core_DAO::executeQuery($query); */
-    }
-    else {
-      $query = 'DELETE FROM civicrm_uit_migrate WHERE type = "%1"';
-      /* CRM_Core_DAO::executeQuery($query, [
-        1 => [$type, 'String', CRM_Core_DAO::QUERY_FORMAT_NO_QUOTES],
-      ]);
-      */
+    // Switch type.
+    switch ($type) {
+      case 'all':
+        // @todo: clear all.
+        break;
+      case 'events':
+        $query = 'SELECT dest_id FROM civicrm_uit_migrate WHERE type = "%1"';
+        $dao = CRM_Core_DAO::executeQuery($query, [
+          1 => [$type, 'String', CRM_Core_DAO::QUERY_FORMAT_NO_QUOTES],
+        ]);
+        while ($dao->fetch()) {
+          // Remove event.
+          try {
+            // Create Event via CiviCRM API.
+            $result = civicrm_api3('Event', 'delete', ['id' => $dao->dest_id]);
+          } catch (\CiviCRM_API3_Exception $e) {
+            \Civi::log()
+              ->debug("CRM_ctrl_uit_BAO_UitMigrate->clear() Event: " . $e->getMessage());
+          }
+          // Return dest_id.
+          $items[] = $dao->dest_id;
+        }
+        // Remove UitMigrate references.
+        /* $query = 'DELETE FROM civicrm_uit_migrate WHERE type = "%1"'; */
+        $query = 'DELETE FROM civicrm_uit_migrate';
+        CRM_Core_DAO::executeQuery($query, [
+          1 => [$type, 'String', CRM_Core_DAO::QUERY_FORMAT_NO_QUOTES],
+        ]);
+        // Return.
+        return $items;
+        break;
     }
     return NULL;
   }

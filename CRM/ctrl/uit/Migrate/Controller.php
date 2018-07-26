@@ -184,7 +184,10 @@ class Controller {
    * @return array
    */
   public function rollback() {
-    return "rollback";
+    // Get Rollback dest_id(s).
+    $items = \CRM_ctrl_uit_BAO_UitMigrate::clear($this->type);
+    return $items;
+
   }
 
 }
