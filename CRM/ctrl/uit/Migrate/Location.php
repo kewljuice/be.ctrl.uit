@@ -146,12 +146,12 @@ class Location {
     $address_params['contact_id'] = 2;
     /*$address_params['contact_id'] = 'user_contact_id';*/
 
-    // name.
+    // Name.
     if (isset($object['name']['nl'])) {
       $address_params['name'] = $object['name']['nl'];
     }
 
-    // without [nl].
+    // Without [nl].
     if (isset($object['address']['streetAddress'])) {
       $address_params['street_address'] = $object['address']['streetAddress'];
     }
@@ -164,8 +164,14 @@ class Location {
     if (isset($object['address']['addressCountry'])) {
       $address_params['country'] = $object['address']['addressCountry'];
     }
+    // Province.
+    if (isset($object['address']['postalCode'])) {
+      if (isset($object['address']['addressCountry']) && $object['address']['addressCountry'] == 'BE') {
+        $address_params['state_province_id'] = $this->fetchProvinceByPostal($object['address']['postalCode']);
+      }
+    }
 
-    // with [nl].
+    // With [nl].
     if (isset($object['address']['nl']['streetAddress'])) {
       $address_params['street_address'] = $object['address']['nl']['streetAddress'];
     }
@@ -177,6 +183,12 @@ class Location {
     }
     if (isset($object['address']['nl']['addressCountry'])) {
       $address_params['country'] = $object['address']['nl']['addressCountry'];
+    }
+    // Province with [nl].
+    if (isset($object['address']['nl']['postalCode'])) {
+      if (isset($object['address']['nl']['addressCountry']) && $object['address']['nl']['addressCountry'] == 'BE') {
+        $address_params['state_province_id'] = $this->fetchProvinceByPostal($object['address']['nl']['postalCode']);
+      }
     }
 
     // Latitude
@@ -228,4 +240,60 @@ class Location {
     // Unset.
     $params = NULL;
   }
+
+  /**
+   * Fetch province by postal code.
+   *
+   * @param string $code
+   *
+   * @return string result
+   */
+  private function fetchProvinceByPostal($code) {
+    if (!empty($code)) {
+      switch (TRUE) {
+        case  ($code < 1300):
+          return "Brussel";
+          break;
+        case  ($code < 1500):
+          return "Waals-Brabant";
+          break;
+        case  ($code < 2000):
+          return "Vlaams-Brabant";
+          break;
+        case  ($code < 3000):
+          return "Antwerpen";
+          break;
+        case  ($code < 3500):
+          return "Vlaams-Brabant";
+          break;
+        case  ($code < 4000):
+          return "Limburg";
+          break;
+        case  ($code < 5000):
+          return "Luik";
+          break;
+        case  ($code < 6000):
+          return "Namen";
+          break;
+        case  ($code < 6600):
+          return "Henegouwen";
+          break;
+        case  ($code < 7000):
+          return "Luxemburg";
+          break;
+        case  ($code < 8000):
+          return "Henegouwen";
+          break;
+        case  ($code < 9000):
+          return "West-Vlaanderen";
+          break;
+        case  ($code < 10000):
+          return "Oost-Vlaanderen";
+          break;
+      }
+    }
+    // Return.
+    return NULL;
+  }
+
 }
