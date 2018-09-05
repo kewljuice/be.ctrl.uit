@@ -74,7 +74,12 @@ class Event {
       if (isset($object['description']['nl'])) {
         $event['description'] = $this->remove_emoji($object['description']['nl']);
       }
-      $event['is_active'] = 0;
+      if(isset($this->config['active'])) {
+        $event['is_active'] = $this->config['active'];
+      } else {
+        $event['is_active'] = 0;
+      }
+
       $event['start_date'] = date('Y-m-d H:i', strtotime($object['startDate']));
       $event['end_date'] = date('Y-m-d H:i', strtotime($object['endDate']));
       try {
