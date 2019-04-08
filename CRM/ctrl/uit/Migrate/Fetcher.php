@@ -36,7 +36,8 @@ class Fetcher {
     // Get cURL resource.
     $curl = curl_init();
     // Create url.
-    $url = urldecode($host . '/?' . http_build_query($post));
+    $params = str_replace(' ', '%20', $post);
+    $url = urldecode($host . '/?' . http_build_query($params));
     // Set some cURL options.
     curl_setopt_array($curl, [
       CURLOPT_RETURNTRANSFER => 1,
