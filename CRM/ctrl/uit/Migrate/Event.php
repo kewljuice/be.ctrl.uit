@@ -74,8 +74,8 @@ class Event {
       if (isset($object['description']['nl'])) {
         $event['description'] = $this->remove_emoji($object['description']['nl']);
       }
-      if(isset($this->config['active'])) {
-        $event['is_active'] = $this->config['active'];
+      if(isset($this->config['events']['active'])) {
+        $event['is_active'] = $this->config['events']['active'];
       } else {
         $event['is_active'] = 0;
       }
