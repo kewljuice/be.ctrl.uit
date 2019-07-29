@@ -143,7 +143,7 @@ class Location {
     }
     // Address parameters.
     $address_params['location_type_id'] = $this->type;
-    $address_params['contact_id'] = 2;
+    $address_params['contact_id'] = 'null';
     /*$address_params['contact_id'] = 'user_contact_id';*/
 
     // Name.
