@@ -21,7 +21,7 @@ class CRM_ctrl_uit_Form_UitSettings extends CRM_Core_Form {
       'text',
       'uit_host',
       'Host',
-      ['value' => $decode['uit_host']]
+      ['value' => (isset($decode['uit_host'])) ? $decode['uit_host'] : '']
     );
     /*
     $this->add(
@@ -41,7 +41,7 @@ class CRM_ctrl_uit_Form_UitSettings extends CRM_Core_Form {
       'text',
       'uit_key',
       'Key',
-      ['value' => $decode['uit_key']]
+      ['value' => (isset($decode['uit_key'])) ? $decode['uit_key'] : '']
     );
     // Buttons.
     $this->addButtons([
