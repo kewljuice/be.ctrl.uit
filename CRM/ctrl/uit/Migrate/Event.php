@@ -17,7 +17,7 @@ class Event {
    * Constructor.
    */
   function __construct() {
-    $config = \CRM_Core_BAO_Setting::getItem('uit', 'uit-config');
+    $config = Civi::settings()->get('uit-config');
     $this->config = json_decode(utf8_decode($config), TRUE);
     $this->type = $this->config['events']['event_type_id'];
   }

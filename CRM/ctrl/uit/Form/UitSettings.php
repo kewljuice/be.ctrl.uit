@@ -14,7 +14,7 @@ class CRM_ctrl_uit_Form_UitSettings extends CRM_Core_Form {
    */
   public function buildQuickForm() {
     // Get default values.
-    $defaults = CRM_Core_BAO_Setting::getItem('uit', 'uit-settings');
+    $defaults = Civi::settings()->get('uit-settings');
     $decode = json_decode(utf8_decode($defaults), TRUE);
     // Fields.
     $this->add(
@@ -76,7 +76,7 @@ class CRM_ctrl_uit_Form_UitSettings extends CRM_Core_Form {
     */
     $credentials['uit_key'] = $values['uit_key'];
     $encode = json_encode($credentials);
-    CRM_Core_BAO_Setting::setItem($encode, 'uit', 'uit-settings');
+    Civi::settings()->set('uit-settings', $encode);
     parent::postProcess();
   }
 

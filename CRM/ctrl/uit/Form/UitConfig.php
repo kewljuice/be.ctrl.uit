@@ -14,7 +14,7 @@ class CRM_ctrl_uit_Form_UitConfig extends CRM_Core_Form {
    */
   public function buildQuickForm() {
     // Set default values.
-    $defaults = CRM_Core_BAO_Setting::getItem('uit', 'uit-config');
+    $defaults = Civi::settings()->get('uit-config');
     $this->setDefaults(['uit-config' => $defaults]);
     // Fields.
     $attributes = ['rows' => '5', 'cols' => '75'];
@@ -43,7 +43,7 @@ class CRM_ctrl_uit_Form_UitConfig extends CRM_Core_Form {
   public function postProcess() {
     $values = $this->controller->exportValues($this->_name);
     $config = $values['uit-config'];
-    CRM_Core_BAO_Setting::setItem($config, 'uit', 'uit-config');
+    Civi::settings()->set('uit-config', $config);
     parent::postProcess();
   }
 

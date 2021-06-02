@@ -55,7 +55,7 @@ function uit_civicrm_uninstall() {
 function uit_civicrm_enable() {
   // Set default settings variable.
   $settings['uit_host'] = 'https://search.uitdatabank.be/';
-  CRM_Core_BAO_Setting::setItem(json_encode($settings), 'uit', 'uit-settings');
+  Civi::settings()->set('uit-settings', json_encode($settings));
   // Set default config variable.
   $config['events'] = [
     'status' => 1,
@@ -66,7 +66,7 @@ function uit_civicrm_enable() {
     'params' => '',
     'limit' => 250,
   ];
-  CRM_Core_BAO_Setting::setItem(json_encode($config), 'uit', 'uit-config');
+  Civi::settings()->set('uit-config', json_encode($config));
   // Continue.
   _uit_civix_civicrm_enable();
 }
@@ -78,8 +78,8 @@ function uit_civicrm_enable() {
  */
 function uit_civicrm_disable() {
   // Remove variable(s).
-  CRM_Core_BAO_Setting::setItem('', 'uit', 'uit-settings');
-  CRM_Core_BAO_Setting::setItem('', 'uit', 'uit-config');
+  Civi::settings()->set('uit-settings', '');
+  Civi::settings()->set('uit-config', '');
   // Continue.
   _uit_civix_civicrm_disable();
 }
